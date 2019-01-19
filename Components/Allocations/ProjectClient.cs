@@ -16,7 +16,7 @@ namespace Allocations
         public async Task<ProjectInfo> Get(long projectId)
         {
             _client.DefaultRequestHeaders.Accept.Clear();
-            var streamTask = _client.GetStreamAsync($"project?projectId={projectId}");
+            var streamTask = _client.GetStreamAsync($"?projectId={projectId}");
 
             var serializer = new DataContractJsonSerializer(typeof(ProjectInfo));
             return await NewMethod(streamTask, serializer);
