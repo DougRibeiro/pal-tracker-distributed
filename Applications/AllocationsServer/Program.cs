@@ -21,5 +21,7 @@ namespace AllocationsServer
                 .UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build())
                 .AddCloudFoundry()
                 .UseStartup<Startup>();
+
+                
     }
 }
