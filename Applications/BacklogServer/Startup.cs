@@ -29,11 +29,11 @@ namespace BacklogServer
 
             services.AddDbContext<StoryContext>(options => options.UseMySql(Configuration));
             services.AddScoped<IStoryDataGateway, StoryDataGateway>();
-            services.AddDiscoveryClient(Configuration);
+           
 
             services.AddSingleton<IProjectClient>(sp =>
             {
-                var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
+               var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
                var httpClient = new HttpClient(handler, false)
                 {
                     BaseAddress = new Uri(Configuration.GetValue<string>("REGISTRATION_SERVER_ENDPOINT"))
@@ -41,6 +41,8 @@ namespace BacklogServer
 
                 return new ProjectClient(httpClient);
             });
+
+             services.AddDiscoveryClient(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

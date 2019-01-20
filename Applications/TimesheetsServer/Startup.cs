@@ -27,7 +27,7 @@ namespace TimesheetsServer
             // Add framework services.
             services.AddMvc();
 
-            services.AddDiscoveryClient(Configuration);
+           
             services.AddDbContext<TimeEntryContext>(options => options.UseMySql(Configuration));
             services.AddScoped<ITimeEntryDataGateway, TimeEntryDataGateway>();
             
@@ -41,6 +41,8 @@ namespace TimesheetsServer
 
                 return new ProjectClient(httpClient);
             });
+
+             services.AddDiscoveryClient(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

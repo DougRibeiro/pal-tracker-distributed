@@ -29,7 +29,7 @@ namespace AllocationsServer
 
             services.AddDbContext<AllocationContext>(options => options.UseMySql(Configuration));
             services.AddScoped<IAllocationDataGateway, AllocationDataGateway>();
-            services.AddDiscoveryClient(Configuration);
+            
             services.AddSingleton<IProjectClient>(sp =>
             {
                var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
@@ -40,6 +40,8 @@ namespace AllocationsServer
 
                 return new ProjectClient(httpClient);
             });
+
+            services.AddDiscoveryClient(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
