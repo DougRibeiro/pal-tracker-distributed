@@ -1,5 +1,6 @@
 ﻿using Accounts;
 using Microsoft.AspNetCore.Builder;
+using Pivotal.Discovery.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ namespace RegistrationServer
             services.AddScoped<IProjectDataGateway, ProjectDataGateway>();
             services.AddScoped<IUserDataGateway, UserDataGateway>();
             services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddDiscoveryClient(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +44,7 @@ namespace RegistrationServer
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseDiscoveryClient();
         }
     }
 }
