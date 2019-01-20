@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using Steeltoe.Common.Discovery;
+using Pivotal.Discovery.Client;
 using Backlog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +29,12 @@ namespace BacklogServer
 
             services.AddDbContext<StoryContext>(options => options.UseMySql(Configuration));
             services.AddScoped<IStoryDataGateway, StoryDataGateway>();
+            services.AddDiscoveryClient(Configuration);
 
             services.AddSingleton<IProjectClient>(sp =>
             {
-                var httpClient = new HttpClient
+                var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
+               var httpClient = new HttpClient(handler, false)
                 {
                     BaseAddress = new Uri(Configuration.GetValue<string>("REGISTRATION_SERVER_ENDPOINT"))
                 };
@@ -44,8 +48,9 @@ namespace BacklogServer
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
+            
             app.UseMvc();
+            app.UseDiscoveryClient();
         }
     }
 }

@@ -40,16 +40,9 @@ namespace Projects
         [Route("projects"), Produces("application/json")]
         public IActionResult Post([FromBody] ProjectInfo info)
         {
-            try
-            {
-                var record = _gateway.Create(info.AccountId, info.Name);
-                var value = new ProjectInfo(record.Id, record.AccountId, record.Name, record.Active, "project info");
-                return Created($"projects/{value.Id}", value);
-            }
-            catch (System.Exception e)
-            {
-                return Created($"projects/0", e.Message);
-            }
+            var record = _gateway.Create(info.AccountId, info.Name);
+            var value = new ProjectInfo(record.Id, record.AccountId, record.Name, record.Active, "project info");
+            return Created($"projects/{value.Id}", value);
         }
     }
 }

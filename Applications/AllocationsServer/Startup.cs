@@ -1,5 +1,7 @@
 ﻿using System;
+using Pivotal.Discovery.Client;
 using System.Net.Http;
+using Steeltoe.Common.Discovery;
 using Allocations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,10 +29,11 @@ namespace AllocationsServer
 
             services.AddDbContext<AllocationContext>(options => options.UseMySql(Configuration));
             services.AddScoped<IAllocationDataGateway, AllocationDataGateway>();
-
+            services.AddDiscoveryClient(Configuration);
             services.AddSingleton<IProjectClient>(sp =>
             {
-                var httpClient = new HttpClient
+               var handler = new DiscoveryHttpClientHandler(sp.GetService<IDiscoveryClient>());
+               var httpClient = new HttpClient(handler, false)
                 {
                     BaseAddress = new Uri(Configuration.GetValue<string>("REGISTRATION_SERVER_ENDPOINT"))
                 };
@@ -46,6 +49,7 @@ namespace AllocationsServer
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseDiscoveryClient();
         }
     }
 }
