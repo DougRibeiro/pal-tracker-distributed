@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore;
+﻿
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Steeltoe.Extensions.Configuration.CloudFoundry;
+using Pivotal.Extensions.Configuration.ConfigServer;
 
 namespace BacklogServer
 {
@@ -18,9 +19,9 @@ namespace BacklogServer
         public static IWebHostBuilder WebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 // https://github.com/aspnet/KestrelHttpServer/issues/1998#issuecomment-322922164
+                 .UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build())
                 .UseCloudFoundryHosting()
-                .UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build())
-                .AddCloudFoundry()
+                .AddConfigServer()
                 .UseStartup<Startup>();
     }
 }

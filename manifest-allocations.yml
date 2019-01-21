@@ -15,3 +15,4 @@ applications:
   - tracker-circuit-breaker-dashboard
   - tracker-amqp
   - tracker-sso
+  - tracker-config-server
