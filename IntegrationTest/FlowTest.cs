@@ -12,7 +12,6 @@ namespace IntegrationTest
     public class FlowTest : IDisposable
     {
         private readonly HttpClient _httpClient = new HttpClient();
-
         private readonly AppServer _registrationServer;
         private readonly AppServer _allocationsServer;
         private readonly AppServer _backlogServer;
